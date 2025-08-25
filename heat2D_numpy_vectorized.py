@@ -45,21 +45,18 @@ t0 = perf_counter()
 while t < finish_time:
     T_new = T.copy()
 
-    for i in range(1,nx-1):
-        for j in range(1,ny-1):
-            T_new[i,j] = T[i,j] + alpha_x * (T[i+1,j] - 2*T[i,j] + T[i-1,j]) + alpha_y * (T[i,j+1] - 2*T[i,j] + T[i,j-1])
+    T_xx = T[2:, 1:-1] - 2*T[1:-1, 1:-1] + T[:-2, 1:-1]
+    T_yy = T[1:-1, 2:] - 2*T[1:-1, 1:-1] + T[1:-1, :-2]
+    T_new[1:-1, 1:-1] = T[1:-1, 1:-1] + alpha_x * T_xx + alpha_y * T_yy
 
-    for i in range(nx):
-        T_new[i, 0] = T_bot
-        T_new[i, ny-1] = T_top
-
-    for j in range(ny):
-        T_new[0, j] = T_left
-        T_new[nx-1, j] = T_right
+    T_new[:, 0] = T_bot
+    T_new[:, -1] = T_top
+    T_new[0, :] = T_left
+    T_new[-1, :] = T_right
 
     T = T_new
     t += dt
-print(f"[default version] Got solution in {perf_counter()-t0:.2} s.")
+print(f"[numpy version] Got solution in {perf_counter()-t0:.2} s.")
 
 ### Analytical Solution ###
 T_true = T_analytical(X, Y, t, alpha)
