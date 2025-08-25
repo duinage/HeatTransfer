@@ -14,12 +14,11 @@ import matplotlib.pyplot as plt
 alpha = 1
 finish_time = 0.1
 xlen, ylen = 1, 1
-N = 50
+N = 100
 nx, ny = xlen*N, ylen*N
 dx = xlen/nx
 dy = ylen/ny
 dt = dx*dx*dy*dy/alpha/(dx*dx+dy*dy)/2
-num_time_steps = int(finish_time / dt)
 
 ### Initial Condition ###
 x = np.linspace(-xlen/2, xlen/2, nx)
@@ -37,14 +36,6 @@ T_bot, T_top, T_left, T_right = 0, 0, 0, 0
 T = T_init.copy()
 
 ### Numerical Solution ###
-for i in range(nx):
-    T[i, 0] = T_bot
-    T[i, ny-1] = T_top
-
-for j in range(ny):
-    T[0, j] = T_left
-    T[nx-1, j] = T_right
-
 alpha_x = alpha * dt/dx/dx
 alpha_y = alpha * dt/dy/dy
 t = 0
@@ -80,13 +71,13 @@ print(f"{err_l2=:.6}; {rel_l2=:.6}")
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
 # Plot initial condition
-im1 = ax1.pcolormesh(X, Y, T_init, vmax=1, cmap="turbo")
+im1 = ax1.pcolormesh(X, Y, T_init, vmax=1, cmap="hot")
 fig.colorbar(im1, ax=ax1)
 ax1.set_aspect('equal', adjustable='box')
 ax1.set_title(f"T(x,0):")
 
 # Plot final numerical solution
-im2 = ax2.pcolormesh(X, Y, T, vmax=1, cmap="turbo")
+im2 = ax2.pcolormesh(X, Y, T, vmax=1, cmap="hot")
 fig.colorbar(im2, ax=ax2)
 ax2.set_aspect('equal', adjustable='box')
 ax2.set_title(f"T(x,{t:.3}):")
