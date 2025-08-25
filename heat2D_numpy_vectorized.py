@@ -16,8 +16,8 @@ finish_time = 0.1
 xlen, ylen = 1, 1
 N = 100
 nx, ny = xlen*N, ylen*N
-dx = xlen/nx
-dy = ylen/ny
+dx = xlen/(nx-1)
+dy = ylen/(ny-1)
 dt = dx*dx*dy*dy/alpha/(dx*dx+dy*dy)/2
 
 ### Initial Condition ###
@@ -56,7 +56,9 @@ while t < finish_time:
 
     T = T_new
     t += dt
-print(f"[numpy version] Got solution in {perf_counter()-t0:.2} s.")
+
+solution_time = perf_counter()-t0
+print(f"[numpy version] Got solution in {solution_time:.2} s.")
 
 ### Analytical Solution ###
 T_true = T_analytical(X, Y, t, alpha)
@@ -83,6 +85,7 @@ fig.colorbar(im2, ax=ax2)
 ax2.set_aspect('equal', adjustable='box')
 ax2.set_title(f"T(x,{t:.3}):")
 
+plt.suptitle(f"[Numpy: time={solution_time:.2f}s.]")
 plt.tight_layout()
-plt.savefig('heat_solution.png')
+plt.savefig('heat_solution_numpy.png')
 plt.show()
