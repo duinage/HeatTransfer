@@ -1,0 +1,3 @@
+C:/Users/duina/repo/heat_equation/cmake-build-debug/CMakeFiles/heat_equation.dir
+C:/Users/duina/repo/heat_equation/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/duina/repo/heat_equation/cmake-build-debug/CMakeFiles/rebuild_cache.dir
