@@ -33,7 +33,7 @@ int main (int argc, char *argv[]) {
 
     // CONFIG
     double alpha = 1.0;
-    double finish_time = 0.1;
+    double finish_time = 1.1;
     double xlen = 1.0, ylen = 1.0;
     int N = 100;
     int nx = static_cast<int>(xlen * N);
@@ -73,6 +73,7 @@ int main (int argc, char *argv[]) {
             T_local[(i + 1) * ny + j] = T_analytical(xx, yy, 0.0, alpha);
         }
     }
+    vector<double> T_new = T_local;
 
     // Numerical Solution
     double alpha_x = alpha * dt / dx / dx;
@@ -96,8 +97,6 @@ int main (int argc, char *argv[]) {
         MPI_Sendrecv(&T_local[local_nx * ny], ny, MPI_DOUBLE, right, 22,
                      &T_local[0], ny, MPI_DOUBLE, left, 22,
                      comm, MPI_STATUS_IGNORE);
-
-        vector<double> T_new = T_local;
 
         for (int i = 1; i < local_nx + 1; ++i) {
             for (int j = 1; j < ny - 1; ++j) {
@@ -124,7 +123,7 @@ int main (int argc, char *argv[]) {
             }
         }
 
-        T_local = T_new;
+        T_local.swap(T_new);
         t += dt;
     }
 
