@@ -90,15 +90,14 @@ int main (int argc, char *argv[]) {
         int left = (rank > 0) ? rank - 1 : MPI_PROC_NULL;
         int right = (rank < size - 1) ? rank + 1 : MPI_PROC_NULL;
 
-        MPI_Sendrecv(&T_local[1 * ny], ny, MPI_DOUBLE, left, 11,
-                     &T_local[(local_nx + 1) * ny], ny, MPI_DOUBLE, right, 11,
-                     comm, MPI_STATUS_IGNORE);
+        MPI_Request reqs[4];
+        MPI_Isend(&T_local[1 * ny], ny, MPI_DOUBLE, left, 11, comm, &reqs[0]);
+        MPI_Irecv(&T_local[(local_nx + 1) * ny], ny, MPI_DOUBLE, right, 11, comm, &reqs[1]);
+        MPI_Isend(&T_local[local_nx * ny], ny, MPI_DOUBLE, right, 22, comm, &reqs[2]);
+        MPI_Irecv(&T_local[0], ny, MPI_DOUBLE, left, 22, comm, &reqs[3]);
 
-        MPI_Sendrecv(&T_local[local_nx * ny], ny, MPI_DOUBLE, right, 22,
-                     &T_local[0], ny, MPI_DOUBLE, left, 22,
-                     comm, MPI_STATUS_IGNORE);
-
-        for (int i = 1; i < local_nx + 1; ++i) {
+        // interior pts
+        for (int i = 2; i < local_nx; ++i) {
             for (int j = 1; j < ny - 1; ++j) {
                 T_new[i * ny + j] = T_local[i * ny + j] +
                                     alpha_x * (T_local[(i + 1) * ny + j] - 2.0 * T_local[i * ny + j] + T_local[(i - 1) * ny + j]) +
@@ -106,7 +105,22 @@ int main (int argc, char *argv[]) {
             }
         }
 
-        for (int i = 0; i < local_nx + 2; ++i) {
+        MPI_Waitall(4, reqs, MPI_STATUSES_IGNORE);
+
+        // boundary pts
+        for (int j = 1; j < ny - 1; ++j) {
+            // left boundary
+            T_new[1 * ny + j] = T_local[1 * ny + j] +
+                                alpha_x * (T_local[2 * ny + j] - 2.0 * T_local[1 * ny + j] + T_local[0 * ny + j]) +
+                                alpha_y * (T_local[1 * ny + j + 1] - 2.0 * T_local[1 * ny + j] + T_local[1 * ny + j - 1]);
+            // right boundary
+            T_new[local_nx * ny + j] = T_local[local_nx * ny + j] +
+                                alpha_x * (T_local[(local_nx + 1) * ny + j] - 2.0 * T_local[local_nx * ny + j] + T_local[(local_nx - 1) * ny + j]) +
+                                alpha_y * (T_local[local_nx * ny + j + 1] - 2.0 * T_local[local_nx * ny + j] + T_local[local_nx * ny + j - 1]);
+        }
+
+        // BCs
+        for (int i = 1; i < local_nx + 1; ++i) {
             T_new[i * ny + 0] = T_bot;
             T_new[i * ny + (ny - 1)] = T_top;
         }
