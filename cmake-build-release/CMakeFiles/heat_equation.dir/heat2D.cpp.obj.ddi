@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CMakeFiles\\heat_equation.dir\\heat2D.cpp.obj",
+            "outputs": [
+                "CMakeFiles\\heat_equation.dir\\heat2D.cpp.obj.ddi"
+            ],
+            "requires": []
+        }
+    ]
+}

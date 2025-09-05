@@ -97,6 +97,7 @@ int main (int argc, char *argv[]) {
         MPI_Irecv(&T_local[0], ny, MPI_DOUBLE, left, 22, comm, &reqs[3]);
 
         // interior pts
+        #pragma omp parallel for collapse(2) schedule(static)
         for (int i = 2; i < local_nx; ++i) {
             for (int j = 1; j < ny - 1; ++j) {
                 T_new[i * ny + j] = T_local[i * ny + j] +
@@ -108,6 +109,7 @@ int main (int argc, char *argv[]) {
         MPI_Waitall(4, reqs, MPI_STATUSES_IGNORE);
 
         // boundary pts
+        #pragma omp parallel for schedule(static)
         for (int j = 1; j < ny - 1; ++j) {
             // left boundary
             T_new[1 * ny + j] = T_local[1 * ny + j] +

@@ -1,0 +1,13 @@
+# ninja log v6
+12	174	7788047123403788	CMakeFiles/heat_equation.dir/heat2D.cpp.obj.ddi	9471d5f5849c348
+2245	2355	7788047145732071	heat_equation.exe	e7b5dd138568828c
+175	205	7788047125024736	CMakeFiles/heat_equation.dir/CXX.dd	cf8ac42f7232e00c
+175	205	7788047125024736	C:/Users/duina/repo/heat_equation/cmake-build-release/CMakeFiles/heat_equation.dir/CXXModules.json	cf8ac42f7232e00c
+175	205	7788047125024736	CMakeFiles/heat_equation.dir/heat2D.cpp.obj.modmap	cf8ac42f7232e00c
+207	2245	7788047125343319	CMakeFiles/heat_equation.dir/heat2D.cpp.obj	b293f8a1f1ed1998
+15	188	7788047704472905	CMakeFiles/heat_equation.dir/heat2D.cpp.obj.ddi	61916d3e491f9886
+189	221	7788047706220921	CMakeFiles/heat_equation.dir/CXX.dd	cf8ac42f7232e00c
+189	221	7788047706220921	C:/Users/duina/repo/heat_equation/cmake-build-release/CMakeFiles/heat_equation.dir/CXXModules.json	cf8ac42f7232e00c
+189	221	7788047706220921	CMakeFiles/heat_equation.dir/heat2D.cpp.obj.modmap	cf8ac42f7232e00c
+223	2045	7788047706564656	CMakeFiles/heat_equation.dir/heat2D.cpp.obj	cf88b91ab9f26b23
+2045	2158	7788047724774725	heat_equation.exe	e7b5dd138568828c
